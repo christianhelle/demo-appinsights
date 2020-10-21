@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{EE6D8B8F-B04B-4A43-B9F5-C398146EDE13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppInsightsDemo.Gateway", "src\AppInsightsDemo.Gateway\AppInsightsDemo.Gateway.csproj", "{2CFF3660-DB0E-4443-A197-57975318D9E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppInsightsDemo.Common", "src\AppInsightsDemo.Common\AppInsightsDemo.Common.csproj", "{B3F2E669-D5A4-43F8-BCB3-4465F9B2ABE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CFF3660-DB0E-4443-A197-57975318D9E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CFF3660-DB0E-4443-A197-57975318D9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CFF3660-DB0E-4443-A197-57975318D9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CFF3660-DB0E-4443-A197-57975318D9E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3F2E669-D5A4-43F8-BCB3-4465F9B2ABE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3F2E669-D5A4-43F8-BCB3-4465F9B2ABE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3F2E669-D5A4-43F8-BCB3-4465F9B2ABE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3F2E669-D5A4-43F8-BCB3-4465F9B2ABE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5CB9F1F7-D48C-4282-84D0-C176B33D7B46}
+	EndGlobalSection
+EndGlobal
