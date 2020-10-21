@@ -11,7 +11,7 @@ namespace AppInsightsDemo.Common
     public static class ServiceOptionsExtensions
     {
         public static string GetWeatherServiceName(this ServiceOptions serviceOptions)
-            => $"chrisweather{serviceOptions.EnvironmentName}";
+            => $"jbapi{serviceOptions.EnvironmentName}demoweather";
 
         public static Uri GetWeatherServiceEndpoint(this ServiceOptions serviceOptions)
         {
