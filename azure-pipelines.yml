@@ -28,15 +28,8 @@ stages:
               command: 'publish'
               publishWebProjects: true
               projects: '**/*Gateway*.csproj'
-              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Gateway'
+              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: true
-
-          - task: PublishBuildArtifacts@1
-            displayName: "Upload Gateway Artifacts"
-            condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
-            inputs:
-              pathtoPublish: '$(Build.ArtifactStagingDirectory)/Gateway'
-              artifactName: 'gateway'
 
           - task: DotNetCoreCLI@2
             displayName: "Build Weather Service"
@@ -45,15 +38,15 @@ stages:
               command: 'publish'
               publishWebProjects: true
               projects: '**/*Weather*.csproj'
-              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/WeatherService'
+              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: true
 
           - task: PublishBuildArtifacts@1
             displayName: "Upload Weather Service Artifacts"
             condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
             inputs:
-              pathtoPublish: '$(Build.ArtifactStagingDirectory)/WeatherService'
-              artifactName: 'weatherservice'
+              pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              artifactName: 'drop'
 
           - task: PublishBuildArtifacts@1
             displayName: 'Upload scripts'
