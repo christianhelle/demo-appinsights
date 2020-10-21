@@ -77,9 +77,6 @@ stages:
                   artifact: drop
 
                 - download: current
-                  artifact: dropfunction
-
-                - download: current
                   artifact: deploy
 
                 - task: AzureCLI@2
