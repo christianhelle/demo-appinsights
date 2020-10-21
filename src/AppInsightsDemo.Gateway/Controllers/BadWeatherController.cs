@@ -12,22 +12,20 @@ namespace AppInsightsDemo.Gateway.Controllers
     public class BadWeatherController : ControllerBase
     {
         private readonly ILogger<BadWeatherController> _logger;
-        private readonly IOptions<ServiceOptions> options;
+        private readonly HttpClientFactory httpClientFactory;
 
         public BadWeatherController(
             ILogger<BadWeatherController> logger,
-            IOptions<ServiceOptions> options)
+            HttpClientFactory httpClientFactory)
         {
             _logger = logger;
-            this.options = options;
+            this.httpClientFactory = httpClientFactory;
         }
 
         [HttpGet]
         public async Task<string> GetAsync()
         {
-            var httpClient = new HttpClient { BaseAddress = options.Value.GetWeatherServiceEndpoint() };
-            var serviceClient = new ApiClient(httpClient);
-
+            var serviceClient = new ApiClient(httpClientFactory.Create());
             await serviceClient.GetWeatherForecastAsync();
             await serviceClient.ThrowInternalErrorAsync();
             return "this will never execute...";

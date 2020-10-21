@@ -16,6 +16,7 @@ namespace AppInsightsDemo.Common
         {
             services.AddApplicationInsightsTelemetry();
             services.AddSingleton<ITelemetryInitializer, SupportTelemetryInitializer>();
+            services.AddScoped<HttpClientFactory>();
         }
     }
 }
