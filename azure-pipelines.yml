@@ -54,3 +54,60 @@ stages:
             inputs:
               pathtoPublish: deploy
               artifactName: deploy
+
+    # Deploy to developement environment
+  - stage: DeployDevelopment
+    displayName: 'Development environment'
+    condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
+
+    jobs:
+      # track deployments on the environment
+      - deployment: 'development'
+        displayName: 'Deploy to Dev environment'
+        pool:
+          vmImage: 'vs2017-win2016'
+        # creates an environment if it doesn't exist
+        environment: 'AppInsights Demo - Development'
+        strategy:
+          # default deployment strategy
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop
+
+                - download: current
+                  artifact: dropfunction
+
+                - download: current
+                  artifact: deploy
+
+                - task: AzureCLI@2
+                  displayName: 'Provision Azure resources'
+                  inputs:
+                    azureSubscription: 'azure'
+                    scriptType: ps
+                    scriptPath: '$(Pipeline.Workspace)/deploy/deploy.ps1'
+                    arguments: -environmentType DevTest -environmentName Dev
+                    addSpnToEnvironment: true
+                    workingDirectory: '$(Pipeline.Workspace)/deploy'
+
+                - task: AzureRmWebAppDeployment@4
+                  displayName: 'Deploy Gateway'
+                  inputs:
+                    appType: apiApp
+                    azureSubscription: 'azure'
+                    WebAppName: 'jbapidevdemo'
+                    enableCustomDeployment: true
+                    DeploymentType: 'webDeploy'
+                    package: '$(Pipeline.Workspace)/drop/AppInsightsDemo.Gateway.zip'
+
+                - task: AzureRmWebAppDeployment@4
+                  displayName: 'Deploy Weather Service'
+                  inputs:
+                    appType: apiApp
+                    azureSubscription: 'azure'
+                    WebAppName: 'jbapidevdemoweather'
+                    enableCustomDeployment: true
+                    DeploymentType: 'webDeploy'
+                    package: '$(Pipeline.Workspace)/drop/AppInsightsDemo.Services.Weather.zip'
