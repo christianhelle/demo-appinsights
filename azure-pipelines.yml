@@ -1,0 +1,69 @@
+trigger:
+  - main
+
+# Change major and/or minor version here.
+name: 1.0$(Rev:.r)
+
+stages:
+
+    # BUILD stage
+  - stage: Build
+    jobs:
+      - job: dotnet
+        displayName: 'Build API and Function'
+        pool:
+          vmImage: 'windows-2019'
+        variables:
+          buildConfiguration: 'Release'
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: '3.1.x'
+              packageType: sdk
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Build $(buildConfiguration)'
+            inputs:
+              command: 'build'
+              arguments: '--configuration $(buildConfiguration) /p:SourceRevisionId=$(Build.SourceVersion) /p:Version="$(Build.BuildNumber)"'
+
+          - task: DotNetCoreCLI@2
+            displayName: "Publish Gateway"
+            condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
+            inputs:
+              command: 'publish'
+              publishWebProjects: true
+              projects: '**/*Gateway*.csproj'
+              arguments: '--no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Gateway'
+              zipAfterPublish: true
+
+          - task: PublishBuildArtifacts@1
+            displayName: "Upload Gateway Artifacts"
+            condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
+            inputs:
+              pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              artifactName: 'gateway'
+
+          - task: DotNetCoreCLI@2
+            displayName: "Publish Weather Service"
+            condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
+            inputs:
+              command: 'publish'
+              publishWebProjects: true
+              projects: '**/*Weather*.csproj'
+              arguments: '--no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/WeatherService'
+              zipAfterPublish: true
+
+          - task: PublishBuildArtifacts@1
+            displayName: "Upload Weather Service Artifacts"
+            condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
+            inputs:
+              pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              artifactName: 'weatherservice'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Upload scripts'
+            condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
+            inputs:
+              pathtoPublish: deploy
+              artifactName: deploy
