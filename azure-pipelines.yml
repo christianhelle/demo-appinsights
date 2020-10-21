@@ -22,19 +22,13 @@ stages:
               packageType: sdk
 
           - task: DotNetCoreCLI@2
-            displayName: 'Build $(buildConfiguration)'
-            inputs:
-              command: 'build'
-              arguments: '--configuration $(buildConfiguration) /p:SourceRevisionId=$(Build.SourceVersion) /p:Version="$(Build.BuildNumber)"'
-
-          - task: DotNetCoreCLI@2
-            displayName: "Publish Gateway"
+            displayName: "Build Gateway"
             condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
             inputs:
               command: 'publish'
               publishWebProjects: true
               projects: '**/*Gateway*.csproj'
-              arguments: '--no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Gateway'
+              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Gateway'
               zipAfterPublish: true
 
           - task: PublishBuildArtifacts@1
@@ -45,13 +39,13 @@ stages:
               artifactName: 'gateway'
 
           - task: DotNetCoreCLI@2
-            displayName: "Publish Weather Service"
+            displayName: "Build Weather Service"
             condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
             inputs:
               command: 'publish'
               publishWebProjects: true
               projects: '**/*Weather*.csproj'
-              arguments: '--no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/WeatherService'
+              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/WeatherService'
               zipAfterPublish: true
 
           - task: PublishBuildArtifacts@1
