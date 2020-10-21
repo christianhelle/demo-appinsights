@@ -35,7 +35,7 @@ stages:
             displayName: "Upload Gateway Artifacts"
             condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
             inputs:
-              pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              pathtoPublish: '$(Build.ArtifactStagingDirectory)/Gateway'
               artifactName: 'gateway'
 
           - task: DotNetCoreCLI@2
@@ -52,7 +52,7 @@ stages:
             displayName: "Upload Weather Service Artifacts"
             condition: "and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))"
             inputs:
-              pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              pathtoPublish: '$(Build.ArtifactStagingDirectory)/WeatherService'
               artifactName: 'weatherservice'
 
           - task: PublishBuildArtifacts@1
